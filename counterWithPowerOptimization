@@ -1,0 +1,40 @@
+module CounterWithPowerOptimization (
+    input wire clk,
+    input wire rst,
+    input wire enable_clk,  // Clock gating control
+    input wire power_enable, // Power gating control
+    output reg [3:0] count
+);
+
+reg clk_gated;
+
+always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        count <= 4'b0000;
+        clk_gated <= 1'b1; // Ensure clock is initially enabled on reset
+    end
+    else if (power_enable) begin
+        // Enable clock gating based on enable_clk
+        if (enable_clk) begin
+            if (count == 4'b1001)
+                count <= 4'b0000;
+            else
+                count <= count + 1;
+        end
+        // Use BUFGCE only when clock is enabled
+        clk_gated <= enable_clk;
+    end
+    else begin
+        // Power gating: turn off clock when power is disabled
+        clk_gated <= 1'b0;
+    end
+end
+
+// Instantiate BUFGCE
+BUFGCE #( ) u1 (
+    .I(clk),            // Clock input
+    .CE(clk_gated),     // Clock enable input (gated)
+    .O()                // Buffered clock output (not used directly)
+);
+
+endmodule
