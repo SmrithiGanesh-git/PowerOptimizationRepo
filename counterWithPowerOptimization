@@ -11,7 +11,7 @@ reg clk_gated;
 always @(posedge clk or posedge rst) begin
     if (rst) begin
         count <= 4'b0000;
-        clk_gated <= 1'b1; // Ensure clock is initially enabled on reset
+        clk_gated <= 1'b1; //  reset
     end
     else if (power_enable) begin
         // Enable clock gating based on enable_clk
@@ -21,7 +21,7 @@ always @(posedge clk or posedge rst) begin
             else
                 count <= count + 1;
         end
-        // Use BUFGCE only when clock is enabled
+        // enabling the Buffered Clock
         clk_gated <= enable_clk;
     end
     else begin
@@ -30,11 +30,11 @@ always @(posedge clk or posedge rst) begin
     end
 end
 
-// Instantiate BUFGCE
+// Instantiate Buffer Gate Clock Enable
 BUFGCE #( ) u1 (
     .I(clk),            // Clock input
     .CE(clk_gated),     // Clock enable input (gated)
-    .O()                // Buffered clock output (not used directly)
+    .O()                // Buffered clock output (not used at all)
 );
 
 endmodule
