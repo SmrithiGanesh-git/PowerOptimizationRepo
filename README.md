@@ -6,3 +6,4 @@ Two pictures of the power report have been uploaded showing the static and dynam
 The corresponding verilog code with and without power optimization has also been added.
 
 There is also a TimingContraint.xdc file to do a timing analysis for the synchronous mod 10 counter, with set up and hold times of 2 ns each.
+There is a demo powerGating.upf file to identify behaviour during the power on and off state
