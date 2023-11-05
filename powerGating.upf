@@ -1,0 +1,12 @@
+
+
+power_domain powerGatedMod10Counter {
+    is_primary_domain: true;
+    primary_domain: top;
+    state: on {
+        elements: CounterWithPowerGating.u1; // Power up the mod 10 synchronous counter
+    };
+    state: off {
+         // Dont power anything up
+    };
+};
